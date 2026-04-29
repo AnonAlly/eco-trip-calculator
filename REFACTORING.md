@@ -1,5 +1,5 @@
 # Refactoring — EcoTrip Calculator
-**Groupe :** [Prénom 1, Prénom 2, Prénom 3]
+**Groupe :** Arthur GAYOT, Romaric Mion
 
 ---
 
