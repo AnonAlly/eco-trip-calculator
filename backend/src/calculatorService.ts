@@ -1,74 +1,63 @@
-class CalculatorService {
-  calculate(d: any, t: any, ct: any, p: any, c: any): any {
-    var result = 0;
-    var lbl = '';
-
-    if (t === 'bike' || t === 'walk') {
-      result = 0;
-      lbl = 'GREEN';
-    } else if (t === 'car') {
-      result = this._calculateCar(d, ct, p, c);
-      lbl = this._getLabel(result);
-    } else if (t === 'train') {
-      result = this._calculateTrain(d, c);
-      lbl = this._getLabel(result);
-    } else if (t === 'bus') {
-      result = d * 0.104;
-      lbl = this._getLabel(result);
-    }
-
-    return { co2: result, label: lbl };
+abstract class TransportCalculator {
+  protected getLabel(co2: number): string {
+    if (co2 < 5) return 'GREEN';
+    if (co2 >= 5 && co2 < 15) return 'ORANGE';
+    return 'RED';
   }
 
-  _calculateCar(d: any, ct: any, p: any, c: any): number {
-    var result = 0;
+  abstract calculate(d: number, params: { ct?: string, p?: number, c?: string }): { co2: number, label: string };
+}
+
+class CarCalculator extends TransportCalculator {
+  calculate(d: number, { ct, p, c }: any) {
+    let result = 0;
     if (ct === 'thermal') {
       result = d * 0.192;
     } else if (ct === 'electric') {
-      if (c === 'France') {
-        result = d * 0.012;
-      } else if (c === 'Germany') {
-        result = d * 0.045;
-      } else if (c === 'Poland') {
-        result = d * 0.078;
-      } else {
-        result = d * 0.04;
-      }
+      const grid: Record<string, number> = { 'France': 0.012, 'Germany': 0.045, 'Poland': 0.078 };
+      result = d * (grid[c] || 0.04);
     } else if (ct === 'hybrid') {
       result = d * 0.098;
     }
 
-    if (p > 0) {
-      result = result / p;
-    }
-
-    return result;
+    if (p > 0) result = result / p;
+    return { co2: result, label: this.getLabel(result) };
   }
+}
 
-  _calculateTrain(d: any, c: any): number {
-    var result = 0;
-    if (c === 'France') {
-      result = d * 0.0032;
-    } else if (c === 'Germany') {
-      result = d * 0.032;
-    } else if (c === 'Poland') {
-      result = d * 0.069;
-    } else if (c === 'Norway') {
-      result = d * 0.001;
-    } else {
-      result = d * 0.041;
-    }
-    return result;
+class TrainCalculator extends TransportCalculator {
+  calculate(d: number, { c }: any) {
+    const grid: Record<string, number> = { 'France': 0.0032, 'Germany': 0.032, 'Poland': 0.069, 'Norway': 0.001 };
+    const result = d * (grid[c] || 0.041);
+    return { co2: result, label: this.getLabel(result) };
   }
+}
 
-  _getLabel(result: number): string {
-    if (result < 5) {
-      return 'GREEN';
-    } else if (result >= 5 && result < 15) {
-      return 'ORANGE';
-    } else {
-      return 'RED';
+class SimpleCalculator extends TransportCalculator {
+  constructor(private factor: number) { super(); }
+  calculate(d: number) {
+    const result = d * this.factor;
+    return { co2: result, label: this.getLabel(result) };
+  }
+}
+
+class CalculatorService {
+  private strategies: Record<string, TransportCalculator> = {
+    car: new CarCalculator(),
+    train: new TrainCalculator(),
+    bus: new SimpleCalculator(0.104),
+    bike: new SimpleCalculator(0),
+    walk: new SimpleCalculator(0)
+  };
+
+  calculate(d: any, t: any, ct: any, p: any, c: any): any {
+    const strategy = this.strategies[t];
+    
+    if (!strategy) {
+      throw new Error(`Transport type ${t} not supported`);
     }
+
+    return strategy.calculate(d, { ct, p, c });
   }
 }
 

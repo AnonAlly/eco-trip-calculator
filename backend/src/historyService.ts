@@ -1,39 +1,27 @@
-class HistoryService {
-  data: any[] = [];
-  counter: number = 0;
+interface Trip {
+  id: number;
+  co2: number;
+  timestamp: Date;
+  [key: string]: any;
+}
 
-  addTrip(tripData: any): any {
-    this.counter++;
-    const trip = {
-      id: this.counter,
-      ...tripData,
-      timestamp: new Date()
-    };
-    this.data.push(trip);
-    return trip;
-  }
+export abstract class HistoryService {
+  protected data: Trip[] = [];
+  private counter: number = 0;
 
-  getAll(): any[] {
+  getAll(): Trip[] {
     return this.data;
   }
 
-  getStats(): any {
-    var total = 0;
-    var avg = 0;
-
-    for (var i = 0; i < this.data.length; i++) {
-      total = total + this.data[i].co2;
-    }
-
-    if (this.data.length > 0) {
-      avg = total / this.data.length;
-    }
+  getStats() {
+    const total = this.data.reduce((sum, trip) => sum + (trip.co2 || 0), 0);
+    const count = this.data.length;
 
     return {
-      totalTrips: this.data.length,
+      totalTrips: count,
       totalCO2: total,
-      averageCO2: avg,
-      lastCalculation: this.data.length > 0 ? this.data[this.data.length - 1].timestamp : null
+      averageCO2: count > 0 ? total / count : 0,
+      lastCalculation: count > 0 ? this.data[count - 1].timestamp : null
     };
   }
 
@@ -41,6 +29,15 @@ class HistoryService {
     this.data = [];
     this.counter = 0;
   }
-}
 
-export default new HistoryService();
+  abstract addTrip(tripData: Omit<Trip, 'id' | 'timestamp'>): Trip;
+
+  protected createTripObject(tripData: any): Trip {
+    this.counter++;
+    return {
+      id: this.counter,
+      ...tripData,
+      timestamp: new Date()
+    };
+  }
+}
