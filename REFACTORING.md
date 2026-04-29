@@ -40,16 +40,18 @@ On peut maintenant ajouter un mode de transport sans toucher à la classe de bas
 
 ---
 
-## Pattern GOF appliqué : [nom du pattern]
+## Pattern GOF appliqué : Strategy
 
 **Problème résolu :**
-[Quel problème de conception ce pattern adresse-t-il dans ce contexte ?]
+Toute la logique de calcule est dans une seul classe et avec trois fonctions.
 
 **Structure mise en place :**
-[Décrivez les classes/interfaces créées et leur rôle]
+Appliquer des strategy (faire plusieurs calculator dans plusieurs fichier/classes)
 
 **Bénéfice concret :**
-[Ce que ça change en pratique]
+Lisibilité, maintenabilité
+
+TODO : Faire du polymorphisme avec les calculator (faire une variable avec le type Calculator et plusieurs classe qui hérite de ce dernier et selon le type de vehicule, définir la variable selon le type hérité (CarCAlculator, BikeCalculator) et ne faire qu'un appel de calculator pour récupérer le result/score)
 
 ---
 
