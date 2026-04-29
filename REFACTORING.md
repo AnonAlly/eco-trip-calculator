@@ -41,22 +41,28 @@
 
 ## Object Calisthenics appliquées
 
-### Règle #[N] — [nom de la règle]
+### Règle #6 — Ne pas abréger
 
-**Violation originale :** `[fichier:ligne]`
-[Extrait + explication de la violation]
+**Violation originale :** `calculatorService.ts & app.ts`
+Nom de variables abrégées.
 
 **Transformation :**
-[Ce que vous avez fait]
+Selon les id présents dans app.js, j'ai refactoré le nom des variables à partir de là pour le backend et le frontend.
+
+d -> distance
+ct -> carType
+etc...
 
 **Bénéfice :**
-[En une phrase]
+Meilleure compréhension du code à la première lecture. Pas besoin de chercher dans tout le projet et de faire des allers-retours entre les fichiers pour comprendre le code.
 
-### Règle #[N] — [nom de la règle]
+### Règle 2 — Ne pas utiliser le mot-clé else
 
-[idem]
+**Violation originale :** `calculatorService.ts`
+Utilisation du else dans la fonction getLabel().
 
----
+**Transformation :**
+Suppression du else, utilisation d'un early return.
 
-## Ce qu'on ferait ensuite
-[Si vous aviez 15 minutes de plus : quelle serait la prochaine transformation prioritaire et pourquoi ?]
+**Bénéfice :**
+Reduction de la charge cognitive pour la lecture du code
