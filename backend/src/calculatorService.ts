@@ -1,45 +1,45 @@
 class CalculatorService {
-  calculate(d: any, t: any, ct: any, p: any, c: any): any {
+  calculate(distance: any, transport: any, carType: any, passengers: any, country: any): any {
     var result = 0;
     var lbl = '';
 
-    if (t === 'bike' || t === 'walk') {
+    if (transport === 'bike' || transport === 'walk') {
       result = 0;
       lbl = 'GREEN';
-    } else if (t === 'car') {
-      result = this._calculateCar(d, ct, p, c);
+    } else if (transport === 'car') {
+      result = this._calculateCar(distance, carType, passengers, country);
       lbl = this._getLabel(result);
-    } else if (t === 'train') {
-      result = this._calculateTrain(d, c);
+    } else if (transport === 'train') {
+      result = this._calculateTrain(distance, country);
       lbl = this._getLabel(result);
-    } else if (t === 'bus') {
-      result = d * 0.104;
+    } else if (transport === 'bus') {
+      result = distance * 0.104;
       lbl = this._getLabel(result);
     }
 
     return { co2: result, label: lbl };
   }
 
-  _calculateCar(d: any, ct: any, p: any, c: any): number {
+  _calculateCar(distance: any, carType: any, passengers: any, country: any): number {
     var result = 0;
-    if (ct === 'thermal') {
-      result = d * 0.192;
-    } else if (ct === 'electric') {
-      if (c === 'France') {
-        result = d * 0.012;
-      } else if (c === 'Germany') {
-        result = d * 0.045;
-      } else if (c === 'Poland') {
-        result = d * 0.078;
+    if (carType === 'thermal') {
+      result = distance * 0.192;
+    } else if (carType === 'electric') {
+      if (country === 'France') {
+        result = distance * 0.012;
+      } else if (country === 'Germany') {
+        result = distance * 0.045;
+      } else if (country === 'Poland') {
+        result = distance * 0.078;
       } else {
-        result = d * 0.04;
+        result = distance * 0.04;
       }
-    } else if (ct === 'hybrid') {
-      result = d * 0.098;
+    } else if (carType === 'hybrid') {
+      result = distance * 0.098;
     }
 
-    if (p > 0) {
-      result = result / p;
+    if (passengers > 0) {
+      result = result / passengers;
     }
 
     return result;

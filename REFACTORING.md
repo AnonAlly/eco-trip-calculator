@@ -41,16 +41,20 @@
 
 ## Object Calisthenics appliquées
 
-### Règle #[N] — [nom de la règle]
+### Règle #6 — Ne pas abréger
 
-**Violation originale :** `[fichier:ligne]`
-[Extrait + explication de la violation]
+**Violation originale :** `calculatorService.ts & app.ts`
+Nom de variables abrégées.
 
 **Transformation :**
-[Ce que vous avez fait]
+Selon les id présents dans app.js, j'ai refactoré le nom des variables à partir de là pour le backend et le frontend.
+
+d -> distance
+ct -> carType
+etc...
 
 **Bénéfice :**
-[En une phrase]
+Meilleure compréhension du code à la première lecture. Pas besoin de chercher dans tout le projet et de faire des allers-retours entre les fichiers pour comprendre le code.
 
 ### Règle #[N] — [nom de la règle]
 
