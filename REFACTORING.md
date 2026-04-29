@@ -3,26 +3,40 @@
 
 ---
 
-## Principe SOLID appliqué : [nom du principe]
+## Principe SOLID appliqué : Open / Closed Principle
 
 **Problème identifié :**
-[Décrivez ce qui était violé dans le code original — localisez avec fichier + ligne]
+On pouvait accéder au méthodes et propriétés des classes (même s'il y'a "_"), dans calculatorService, compareService et historyService (backend).
 
 **Transformation réalisée :**
-[Ce que vous avez fait — créé une interface ? extrait une classe ? inversé une dépendance ?]
+Transformation des classes, avec des interfaces et classes abstraites.
 
 **Avant :**
-```[langage]
-// extrait du code original
+```[TypeScript]
+class HistoryService {
+  data: any[] = [];
+  counter: number = 0;
+[...]
+}
 ```
 
 **Après :**
-```[langage]
-// extrait du code refactoré
+```[TypeScript]
+interface Trip {
+  id: number;
+  co2: number;
+  timestamp: Date;
+  [key: string]: any;
+}
+
+export abstract class HistoryService {
+  protected data: Trip[] = [];
+  private counter: number = 0;
+}
 ```
 
 **Bénéfice concret :**
-[Ce que ça change en pratique : "on peut maintenant ajouter un mode de transport sans toucher à..."]
+On peut maintenant ajouter un mode de transport sans toucher à la classe de base, pareil pour l'historique et le calcul.
 
 ---
 
