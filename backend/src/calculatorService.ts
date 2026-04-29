@@ -62,13 +62,9 @@ class CalculatorService {
   }
 
   _getLabel(result: number): string {
-    if (result < 5) {
-      return 'GREEN';
-    } else if (result >= 5 && result < 15) {
-      return 'ORANGE';
-    } else {
-      return 'RED';
-    }
+    if (result < 5) return 'GREEN';
+    if (result >= 5 && result < 15) return 'ORANGE';
+    return 'RED';
   }
 }
 

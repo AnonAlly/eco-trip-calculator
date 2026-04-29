@@ -56,11 +56,13 @@ etc...
 **Bénéfice :**
 Meilleure compréhension du code à la première lecture. Pas besoin de chercher dans tout le projet et de faire des allers-retours entre les fichiers pour comprendre le code.
 
-### Règle #[N] — [nom de la règle]
+### Règle 2 — Ne pas utiliser le mot-clé else
 
-[idem]
+**Violation originale :** `calculatorService.ts`
+Utilisation du else dans la fonction getLabel().
 
----
+**Transformation :**
+Suppression du else, utilisation d'un early return.
 
-## Ce qu'on ferait ensuite
-[Si vous aviez 15 minutes de plus : quelle serait la prochaine transformation prioritaire et pourquoi ?]
+**Bénéfice :**
+Reduction de la charge cognitive pour la lecture du code
